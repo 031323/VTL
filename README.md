@@ -1,2 +1,2 @@
 # VTL
-Peter Birkholz's [VocalTractLab](http://www.vocaltractlab.de/)
+Peter Birkholz's [VocalTractLab](http://www.vocaltractlab.de/) API
