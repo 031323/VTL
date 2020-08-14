@@ -2,8 +2,13 @@ file(GLOB VTL_GUI_SRC
 	"*.cpp"
 )
 add_executable(vtleditor ${VTL_GUI_SRC})
-
+if(NOT DEFINED WXCONFIG)
+	message( SEND_ERROR "WXCONFIG?")
+endif()
+execute_process(COMMAND ${WXCONFIG} --cxxflags OUTPUT_VARIABLE WXCXXFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND ${WXCONFIG} --libs OUTPUT_VARIABLE WXLIBFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND ${WXCONFIG} --gl-libs OUTPUT_VARIABLE WXGLFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
 set(WXWINDOWS_USE_GL 1)
-set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -I/home/a/Downloads/wx/lib/wx/include/gtk3-unicode-3.1 -I/home/a/Downloads/wxWidgets-3.1.4/include -DWXUSINGDLL -D__WXGTK3__ -D__WXGTK__ -pthread")
-SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -L/home/a/Downloads/wx/lib -pthread -Wl,-rpath,/home/a/Downloads/wx/lib -lwx_gtk3u_xrc-3.1 -lwx_gtk3u_html-3.1 -lwx_gtk3u_qa-3.1 -lwx_gtk3u_core-3.1 -lwx_baseu_xml-3.1 -lwx_baseu_net-3.1 -lwx_baseu-3.1 -lwx_gtk3u_gl-3.1 -lOpenGL -lGLU")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${WXCXXFLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${WXLIBFLAGS} ${WXGLFLAGS} -lOpenGL -lGLU")
 target_link_libraries(vtleditor vtl)
